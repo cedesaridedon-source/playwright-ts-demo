@@ -1,5 +1,6 @@
 import { expect, Locator, Page} from '@playwright/test';
 
+//Test Case 7: Verify Test Cases Page
 export class testCasePage {
 
     constructor(private page: Page) {}
@@ -10,8 +11,6 @@ export class testCasePage {
       private get clickTestCaseLink() { return this.page.locator('a[href="/test_cases"]') }
       private get validateTestCase()  { return this.page.locator('.title.text-center')}
       private get validateBelowList() { return this.page.locator('div.panel-group h5 span')}
-
-
                                                                
     async testCase () {
         await this.clickTestCaseLink.first().click();
