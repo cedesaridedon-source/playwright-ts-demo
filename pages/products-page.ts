@@ -20,9 +20,30 @@ export class ProductPage {
     await expect(this.categoryTitle).toBeVisible();
     await expect(this.brandsTitle).toBeVisible();
   }
-}
 
-///////////NOTES///////////////
+  ////Test Case 9: Search Product////
+  private get searchInput() { 
+    return this.page.locator('#search_product');
+  }
+
+  private get submitSearch() {
+    return this.page.locator('#submit_search');
+  }
+  async verifySearchProductWithExactCount() {
+    await this.productsLink.click();
+    await this.searchInput.fill('Top');
+    await this.submitSearch.click();
+
+  const names = this.page.locator('.product-name');
+  await expect(names.first()).toBeVisible();
+  const texts = await names.allTextContents();
+  for (const text of texts) {
+  expect(text.toLowerCase()).toContain('top');
+    }
+    
+  }
+}
+/////////// NOTES ///////////////
 // constructor(...) runs when you create a new instance of the class
 // page: Page → expects a Playwright Page object
 // private page → declares + assigns a class property in one line
