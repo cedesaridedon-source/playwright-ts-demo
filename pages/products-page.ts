@@ -1,29 +1,31 @@
-import { Locator, Page, expect} from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 
-export class productPage {
-    constructor (private page : Page) {
-    }
+export class ProductPage {
+  constructor(private page: Page) {}  
 
-    async openProductPage () {
-    await this.page.goto('/')
-}
-  ///visible filters all hidden element, only elements actually visible on screen are match
-    private get validateHomePage () { return this.page.locator('div.carousel-inner h1:visible')}
-    private get clickProductLink () { return this.page.locator('a[href="/products"]')}
-    private get validateProductPage () { return this.page.locator ('div.features_items h2').first()}
-    private get validateCategory() { return this.page.locator('div.left-sidebar h2').first()}
-    private get validateBrands() { return this.page.locator('div.brands_products h2').first()}
-    
-    async productPage (){
+  async openProductPage() {
+    await this.page.goto('/products');
+  }
+  // Locators
+  private get productsLink() { return this.page.getByRole('link', { name: 'Products' });}
+  private get allProductsTitle() { return this.page.getByRole('heading', { name: /All Products/i }); }
+  private get categoryTitle() {return this.page.getByRole('heading', { name: /Category/i });}
+  private get brandsTitle() {return this.page.getByRole('heading', { name: /Brands/i });}
 
-        await expect (this.validateHomePage).toHaveText(/Automation\s*Exercise/);
-        await this.clickProductLink.click()
-        await expect (this.page).toHaveURL('/products');
-        await expect (this.validateProductPage).toHaveText('All Products');
-        await expect (this.validateCategory).toHaveText('Category');
-        await expect (this.validateBrands).toHaveText('Brands');
-
-    }
-    
+  // Actions / Assertions
+  async verifyProductPage() { 
+    await this.productsLink.click();
+    await expect(this.page).toHaveURL(/products/); 
+    await expect(this.allProductsTitle).toBeVisible();
+    await expect(this.categoryTitle).toBeVisible();
+    await expect(this.brandsTitle).toBeVisible();
+  }
 }
 
+///////////NOTES///////////////
+// constructor(...) runs when you create a new instance of the class
+// page: Page → expects a Playwright Page object
+// private page → declares + assigns a class property in one line
+// Makes page accessible only inside the class
+// Proper way to call the class///
+       //const productPage = new ProductPage(page);
